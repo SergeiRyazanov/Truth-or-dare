@@ -1,18 +1,15 @@
-//
-//  ViewController.swift
-//  TruthOrDare
-//
-//  Created by Сергей Рязанов on 6/18/26.
-//
-
 import UIKit
 
 final class StartView: UIViewController {
 
+    private let viewModel = StartViewModel()
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "BackgroundColor")
+        table.dataSource = self
+        table.delegate = self
         view.addSubview(chooseAgeLabel)
         view.addSubview(chooseAgeDescriptionLabel)
         view.addSubview(table)
@@ -81,14 +78,13 @@ final class StartView: UIViewController {
     
     @objc func nextPage() {
 
-        guard let selectedIndexPath = table.indexPathForSelectedRow else {
-
+        guard let selectedIndexPath = viewModel.selectedIndex else {
             warningMSG.text = "Хмм, я не знаю ваш возраст 🤔"
             warningMSG.textColor = UIColor(named: "AddTextColor")
             return
         }
 
-//        print(table.dataCellStartView[selectedIndexPath.row].age)
+        print(viewModel.option(at: selectedIndexPath).age)
 
         let vc = MainVew()
         navigationController?.pushViewController(vc, animated: true)
@@ -140,3 +136,34 @@ final class StartView: UIViewController {
     }
 }
 
+extension StartView: UITableViewDataSource {
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        viewModel.numberOfRows()
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
+        let cell = tableView.dequeueReusableCell(
+            withIdentifier: CellStartView.reuseID,
+            for: indexPath
+        ) as! CellStartView
+
+        let model = viewModel.option(at: indexPath)
+        cell.config(post: model)
+
+        return cell
+    }
+}
+
+extension StartView: UITableViewDelegate {
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
+        viewModel.select(at: indexPath)
+
+        if let cell = tableView.cellForRow(at: indexPath) as? CellStartView {
+            cell.setSelected(true, animated: true)
+        }
+    }
+}

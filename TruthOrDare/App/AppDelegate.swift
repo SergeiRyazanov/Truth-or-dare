@@ -1,10 +1,3 @@
-//
-//  AppDelegate.swift
-//  TruthOrDare
-//
-//  Created by Сергей Рязанов on 6/18/26.
-//
-
 import UIKit
 
 @main

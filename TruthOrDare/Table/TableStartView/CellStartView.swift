@@ -1,10 +1,3 @@
-//
-//  CellStartView.swift
-//  TruthOrDare
-//
-//  Created by Сергей Рязанов on 6/20/26.
-//
-
 import UIKit
 
 final class CellStartView: UITableViewCell {
@@ -90,7 +83,7 @@ final class CellStartView: UITableViewCell {
     private func setupCell() {
         
         contentView.addSubview(cellColor)
-        contentView.addSubview(selectionOverlayView) // 👈 поверх cellColor
+        contentView.addSubview(selectionOverlayView)
         contentView.addSubview(emojiInsideCell)
         contentView.addSubview(textInsideCell)
         contentView.addSubview(checkMark)
